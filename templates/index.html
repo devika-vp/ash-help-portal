@@ -1,0 +1,1059 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description"
+    content="ASH Superhero Portal — Every voice deserves to be heard. Interactive support companion for young people dealing with stress, anxiety, and academic burnout." />
+  <title>ASH // Every voice deserves to be heard</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,600;1,600;1,700&family=DM+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+</head>
+
+<body>
+  <!-- Background Video & Dynamic Particle Canvas Overlay -->
+  <video class="site-background-video" id="bgVideo" autoplay muted loop playsinline webkit-playsinline preload="auto"
+    aria-hidden="true">
+    <source src="{{ url_for('static', filename='images/back.mp4') }}" type="video/mp4" />
+  </video>
+  <canvas id="particleCanvas" class="particle-canvas" aria-hidden="true"></canvas>
+  <div class="site-background-overlay" aria-hidden="true"></div>
+  <div class="glow glow-a" aria-hidden="true"></div>
+  <div class="glow glow-b" aria-hidden="true"></div>
+  <div class="glow glow-c" aria-hidden="true"></div>
+  <div class="noise"></div>
+
+  <!-- Ambient Control Floating Bar -->
+  <div class="ambient-controls" aria-label="Audio and visual ambience controls">
+    <button type="button" id="toggleVideoMute" class="ambient-btn" title="Toggle background video audio"
+      aria-label="Toggle Mute">
+      <span class="ambient-icon">◩</span>
+      <span class="ambient-label">Muted</span>
+    </button>
+    <button type="button" id="toggleDim" class="ambient-btn" title="Toggle ambient brightness"
+      aria-label="Toggle Dim Mode">
+      <span class="ambient-icon">✦</span>
+      <span class="ambient-label">Ambient</span>
+    </button>
+  </div>
+
+  <!-- Navigation Header -->
+  <header class="site-header">
+    <a class="brand" href="#top" aria-label="Ash home">
+      <span class="brand-mark">
+        <img src="{{ url_for('static', filename='images/icon.png') }}" class="brand-img" alt="Ash Logo" />
+      </span>
+      <span class="brand-text">ASH <small>// HERO PORTAL</small></span>
+    </a>
+
+    <!-- Mobile Hamburger Toggle -->
+    <button class="nav-toggle" id="navToggle" type="button" aria-label="Toggle navigation menu">
+      <span></span><span></span><span></span>
+    </button>
+
+    <nav class="nav-links" id="navLinks" aria-label="Main navigation">
+      <a href="#top" class="active"><span class="nav-dot">•</span>Home</a>
+      <a href="#story">Origin</a>
+      <a href="#abilities">Powers</a>
+      <a href="#code">Ash's Code</a>
+      <a href="#how-it-works">How Ash Helps</a>
+      <a href="#mission">Mission</a>
+      <a href="#signal">Send Signal</a>
+      <a class="nav-cta" href="#chat">Talk to Ash <span class="cta-spark">✦</span></a>
+    </nav>
+  </header>
+
+  <main id="top">
+    <!-- 1. Hero Section: Meet ASH -->
+    <section class="hero ash-tab" aria-label="Welcome to Ash's world">
+      <div class="ash-tab-top">
+        <div class="ash-tab-brand">
+          <span class="ash-tab-avatar">
+            <img src="{{ url_for('static', filename='images/icon.png') }}" class="brand-img" alt="Ash" />
+          </span>
+          <strong>ASH</strong>
+        </div>
+        <span class="ash-online" title="Ash's chat is ready"><i></i> Chat online</span>
+      </div>
+
+      <div class="ash-tab-copy reveal">
+        <div class="hero-opening-quote">
+          <span>🌃</span> “The city is loud. But sometimes, the hardest cries are silent.”
+        </div>
+        <div class="hero-badge">
+          <span class="pulse-ring"></span>
+          <span class="badge-text">ASH // GUARDIAN OF THE UNHEARD</span>
+        </div>
+        <h1>ASH <br /><em>The Hero Who Listens.</em></h1>
+        <div class="hero-identity-motto">
+          <strong class="identity-title">ASH // GUARDIAN OF THE UNHEARD</strong>
+          <em class="identity-subtitle">“She doesn't fight villains. She fights silence.”</em>
+        </div>
+        <p>A superhero guarding a modern metropolis full of unvoiced struggles. Ash doesn't fight villains with brute
+          force—Ash fights problems by listening, understanding, and taking action.</p>
+
+        <!-- Live Signals Visual Ticker -->
+        <div class="live-signals-box" id="liveSignalsBox" aria-live="polite">
+          <div class="live-signals-header">
+            <span class="pulse-ring"></span>
+            <span class="live-title">LIVE SIGNALS INCOMING</span>
+            <span class="live-mode-badge">Listening Mode</span>
+          </div>
+          <div class="live-signals-ticker" id="liveSignalsTicker">
+            <div class="signal-quote-item active">
+              <span class="signal-quote-tag">◉ SIGNAL RECEIVED</span>
+              <p class="signal-quote-text">“I don't know who to talk to.”</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="ash-tab-actions">
+          <a class="ash-action ash-action-primary" href="#chat">Need someone to listen? <span>→</span></a>
+          <a class="ash-action" href="#story">Explore Ash's Story <span>↓</span></a>
+          <a class="ash-action ash-action-ghost" href="#signal">Send a Signal <span>⚡</span></a>
+        </div>
+
+        <!-- Hero Meaningful Stats Strip -->
+        <div class="hero-stats-strip">
+          <div class="stat-item">
+            <span class="stat-num">1,280+</span>
+            <span class="stat-label">Signals Heard</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-num">94%</span>
+            <span class="stat-label">Received Safely</span>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="stat-item">
+            <span class="stat-num">24/7</span>
+            <span class="stat-label">Listening Mode</span>
+          </div>
+        </div>
+        <small class="stats-disclaimer">* Fictional / demo statistics representing Ash Guardian system capacity</small>
+      </div>
+
+      <!-- Ash Character Visual with Glowing Purple Aura -->
+      <div class="ash-tab-media reveal delay-one tilt-card" id="heroMediaCard">
+        <video class="hero-card-video ash-video" autoplay muted loop playsinline webkit-playsinline preload="auto"
+          poster="{{ url_for('static', filename='images/logo.jpg') }}" aria-label="Ash superhero video loop">
+          <source src="{{ url_for('static', filename='images/ash-hero-transparent.webm') }}" type="video/webm" />
+          <source src="{{ url_for('static', filename='images/hero.mp4') }}" type="video/mp4" />
+        </video>
+        <div class="ash-media-shade"></div>
+
+        <div class="hero-chip hero-chip-top">
+          <span class="chip-icon">🧠</span>
+          <div><small>GREATEST POWER</small><strong>Empathy Vision</strong></div>
+        </div>
+        <div class="hero-chip hero-chip-bottom">
+          <span class="chip-icon">🛡️</span>
+          <div><small>MISSION</small><strong>Guardian of the Unheard</strong></div>
+        </div>
+        <div class="hero-chip hero-chip-right">
+          <span class="chip-icon">⚡</span>
+          <div><small>STATUS</small><strong>Active Companion</strong></div>
+        </div>
+      </div>
+
+      <a class="ash-tab-prompt reveal delay-two" href="#chat">
+        <strong>Ash is here to listen.</strong>
+        <span>Tell her what's on your mind. You are not alone.</span>
+        <b aria-hidden="true">↓</b>
+      </a>
+    </section>
+
+    <!-- Infinite Marquee Ticker -->
+    <section class="marquee" aria-label="Ash core values">
+      <div class="marquee-content">
+        EVERY VOICE DESERVES TO BE HEARD <span>✦</span> LISTEN FIRST <span>✦</span> MAKE SPACE <span>✦</span> YOU ARE
+        NOT ALONE <span>✦</span> GUARDIAN OF THE UNHEARD <span>✦</span> LISTEN FIRST <span>✦</span> MAKE SPACE
+        <span>✦</span> YOU ARE NOT ALONE <span>✦</span>
+      </div>
+    </section>
+
+    <!-- Interactive Empathy Radar Scanner Widget -->
+    <section class="empathy-scanner-section section-pad">
+      <div class="glass-card empathy-scanner-card reveal">
+        <div class="scanner-header">
+          <span class="signal-tag">◉ EMPATHY RADAR // QUICK INTAKE</span>
+          <h2>How are you feeling right now?</h2>
+          <p>Select your current state below for instant, compassionate guidance from Ash:</p>
+        </div>
+
+        <div class="feeling-pills-grid" id="feelingPillsGrid">
+          <button type="button" class="feeling-btn active" data-title="Overwhelmed & Stressed"
+            data-guidance="“Take a slow, deep breath. Unclench your jaw and drop your shoulders. You don't have to fix everything in this single minute. Ash is right here.”">🤯
+            Overwhelmed</button>
+          <button type="button" class="feeling-btn" data-title="Exam & Study Burnout"
+            data-guidance="“Grades measure memory and test performance—never your intrinsic value as a human being. Give your mind permission to rest for 15 minutes.”">📚
+            Exam Burnout</button>
+          <button type="button" class="feeling-btn" data-title="Feeling Invisible or Alone"
+            data-guidance="“Even in a crowded city of millions, solitude can feel heavy. You are not invisible here. Ash hears your silence.”">🌙
+            Feeling Alone</button>
+          <button type="button" class="feeling-btn" data-title="Work & Career Friction"
+            data-guidance="“Workplace deadlines and career expectations can feel relentless. Your peace of mind matters more than proving yourself every second.”">💼
+            Work Friction</button>
+          <button type="button" class="feeling-btn" data-title="Just Need to Vent"
+            data-guidance="“No advice needed? No problem. Type whatever is on your mind into Ash Link or send a signal. We listen without judging.”">🎧
+            Just Need to Vent</button>
+        </div>
+
+        <div class="guidance-preview-box" id="guidancePreviewBox">
+          <div class="guidance-avatar">
+            <img src="{{ url_for('static', filename='images/help.png') }}" alt="Ash" />
+            <span class="guidance-pulse"></span>
+          </div>
+          <div class="guidance-body">
+            <strong id="guidanceTitle">Overwhelmed & Stressed</strong>
+            <p id="guidanceText">“Take a slow, deep breath. Unclench your jaw and drop your shoulders. You don't have to
+              fix everything in this single minute. Ash is right here.”</p>
+            <a href="#chat" class="ash-action ash-action-primary guidance-chat-link">Talk More With Ash
+              <span>→</span></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. Origin Story: Cinematic Open Section -->
+    <section id="story" class="story section-pad story-cinematic">
+      <div class="section-head sketch-head reveal">
+        <span>01 / ORIGIN</span>
+        <h2>WHO IS ASH? // Her Journey</h2>
+      </div>
+
+      <!-- Cinematic Full-Width Narrative (No heavy boxed panel) -->
+      <div class="story-open-narrative reveal">
+        <div class="story-hero-quote">
+          “In a metropolis full of constant noise, the quietest struggles are often the hardest to carry.”
+        </div>
+        <div class="story-body-copy">
+          <p>Ash noticed the quiet struggles behind ordinary smiles—the student who felt alone, the person afraid to
+            speak, and the young mind carrying too much in silence.</p>
+          <p>She discovered that true strength was not about fighting villains with brute force. It was about listening,
+            understanding, and helping people find the courage to reach out.</p>
+          <p class="story-highlight">She does not promise to solve every problem instantly. Instead, she helps citizens
+            take the next safe step toward support.</p>
+        </div>
+      </div>
+
+      <!-- Asymmetric Timeline Layout -->
+      <h3 class="timeline-head reveal">JOURNEY TIMELINE // ◉ SIGNALS DETECTED</h3>
+      <div class="origin-asymmetric-grid reveal">
+        <article class="timeline-block">
+          <div class="timeline-tag">01 / THE SILENCE</div>
+          <h3>The Silence</h3>
+          <p>She notices unheard voices and quiet struggles behind ordinary smiles across the city.</p>
+        </article>
+        <article class="timeline-block">
+          <div class="timeline-tag">02 / THE AWAKENING</div>
+          <h3>The Awakening</h3>
+          <p>She discovers her powers of Empathy Vision, active listening, and calm reasoning.</p>
+        </article>
+        <article class="timeline-block">
+          <div class="timeline-tag">03 / THE MISSION</div>
+          <h3>The Mission</h3>
+          <p>She chooses to protect young people navigating stress, anxiety, and loneliness.</p>
+        </article>
+        <article class="timeline-block">
+          <div class="timeline-tag">04 / THE PROMISE</div>
+          <h3>The Promise</h3>
+          <p>Every voice deserves to be heard—no one has to carry heavy burdens alone.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- 3. Powers and Abilities Section -->
+    <section id="abilities" class="abilities section-pad">
+      <div class="section-head sketch-head reveal">
+        <span>02</span>
+        <h2>Powers & Meaningful Abilities</h2>
+      </div>
+      <p class="gallery-subhead reveal">Ash isn't a traditional villain-fighter—her powers are designed to understand,
+        protect, and empower unvoiced minds.</p>
+
+      <div class="ability-grid reveal">
+        <article class="ability-card glass-card tilt-card">
+          <span class="ability-icon">🧠</span>
+          <h3>Empathy Vision</h3>
+          <p>Understands what people don't say—recognizing unseen anxiety, unspoken loneliness, and emotional fatigue.
+          </p>
+        </article>
+        <article class="ability-card glass-card tilt-card">
+          <span class="ability-icon">⚡</span>
+          <h3>Echo Sense</h3>
+          <p>Detects when someone needs immediate help, activating urgent guidance and crisis response pathways.</p>
+        </article>
+        <article class="ability-card glass-card tilt-card">
+          <span class="ability-icon">🛡️</span>
+          <h3>Calm Field</h3>
+          <p>Protects people from fear and isolation, creating a safe space to share without judgment.</p>
+        </article>
+        <article class="ability-card glass-card tilt-card">
+          <span class="ability-icon">🔮</span>
+          <h3>Action Link</h3>
+          <p>Uncovers the real problem behind a situation, helping visitors navigate root causes rather than symptoms.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <!-- 3. Ash's Code Section -->
+    <section id="code" class="ash-code-section section-pad">
+      <div class="section-head sketch-head reveal">
+        <span>03</span>
+        <h2>ASH'S CODE</h2>
+      </div>
+      <p class="gallery-subhead reveal">The four unbreakable principles that define the Guardian of the Unheard.</p>
+
+      <div class="code-grid reveal">
+        <article class="code-card glass-card tilt-card">
+          <span class="code-num">01</span>
+          <div class="code-icon">🎧</div>
+          <h3>Listen before judging.</h3>
+          <p>Every story carries hidden depth. Ash creates space for every thought without judgment or premature
+            conclusions.</p>
+        </article>
+        <article class="code-card glass-card tilt-card">
+          <span class="code-num">02</span>
+          <div class="code-icon">🧠</div>
+          <h3>Understand before acting.</h3>
+          <p>Superpowers mean nothing without clarity. Ash looks beyond symptoms to understand the heart of what someone
+            is carrying.</p>
+        </article>
+        <article class="code-card glass-card tilt-card">
+          <span class="code-num">03</span>
+          <div class="code-icon">🛡️</div>
+          <h3>Protect without controlling.</h3>
+          <p>Ash empowers citizens to find courage and clarity, guiding safe steps without forcing decisions or
+            overriding free choice.</p>
+        </article>
+        <article class="code-card glass-card tilt-card">
+          <span class="code-num">04</span>
+          <div class="code-icon">⚡</div>
+          <h3>Never let silence become invisibility.</h3>
+          <p>No burden is too small to matter. No voice in the city should ever feel forgotten or invisible.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- 4. How Ash Helps Section -->
+    <section id="how-it-works" class="how-it-works-section section-pad">
+      <div class="section-head sketch-head reveal">
+        <span>03</span>
+        <h2>How Ash Helps</h2>
+      </div>
+      <p class="gallery-subhead reveal">Listen → Understand → Guide → Connect</p>
+
+      <div class="how-it-works-grid reveal">
+        <article class="glass-card process-card tilt-card">
+          <span class="process-num">STEP 01 — LISTEN</span>
+          <div class="process-icon">🎧</div>
+          <h3>Listen</h3>
+          <p>Share what's on your mind freely in a private, judgment-free space.</p>
+        </article>
+        <article class="glass-card process-card tilt-card">
+          <span class="process-num">STEP 02 — UNDERSTAND</span>
+          <div class="process-icon">🧠</div>
+          <h3>Understand</h3>
+          <p>Ash uncovers the real concern behind stress, anxiety, or unspoken fatigue.</p>
+        </article>
+        <article class="glass-card process-card tilt-card">
+          <span class="process-num">STEP 03 — GUIDE</span>
+          <div class="process-icon">💡</div>
+          <h3>Guide</h3>
+          <p>Discover helpful perspective, calm reasoning, and structured next steps.</p>
+        </article>
+        <article class="glass-card process-card tilt-card">
+          <span class="process-num">STEP 04 — CONNECT</span>
+          <div class="process-icon">⚡</div>
+          <h3>Connect</h3>
+          <p>Optionally transmit your signal to Ash's response team or trusted human support.</p>
+        </article>
+      </div>
+    </section>
+
+    <!-- 4. Interactive City Section: The City Where Ash Listens -->
+    <section id="city" class="city-section section-pad">
+      <div class="section-head sketch-head reveal">
+        <span>03</span>
+        <h2>The City // Where Ash Listens</h2>
+      </div>
+      <p class="gallery-subhead reveal">Different locations in the metropolis represent different unvoiced struggles.
+        Select any sector to listen to its story and signal Ash.</p>
+
+      <div class="city-grid reveal">
+        <article class="city-card glass-card city-trigger" data-city-title="Campus Haven"
+          data-city-category="Academic Stress"
+          data-city-story="In high-pressure academic corridors, grades often shadow personal worth. Ash monitors Campus Haven to remind students that deadlines do not define your value.">
+          <div class="city-icon-wrap">🏫</div>
+          <div class="city-badge">SECTOR 01 — CAMPUS</div>
+          <h3>Campus Haven</h3>
+          <p>Academic burnout, exam pressure, and unvoiced study stress.</p>
+          <span class="city-action-btn">Listen to Story <span>→</span></span>
+        </article>
+
+        <article class="city-card glass-card city-trigger" data-city-title="Quiet Corner"
+          data-city-category="Loneliness"
+          data-city-story="Even in a crowded city, feeling invisible is a silent struggle. Ash's empathy radar reaches Quiet Corner to ensure no one carries loneliness alone.">
+          <div class="city-icon-wrap">🌙</div>
+          <div class="city-badge">SECTOR 02 — SOLITUDE</div>
+          <h3>Quiet Corner</h3>
+          <p>Loneliness, feeling invisible, and unvoiced emotional worries.</p>
+          <span class="city-action-btn">Listen to Story <span>→</span></span>
+        </article>
+
+        <article class="city-card glass-card city-trigger" data-city-title="Crisis Refuge"
+          data-city-category="Urgent Support"
+          data-city-story="When stress turns into panic, Crisis Refuge activates. Ash's Crisis Sense brings immediate calm reasoning and guides visitors toward safety.">
+          <div class="city-icon-wrap">⚡</div>
+          <div class="city-badge">SECTOR 03 — CRISIS</div>
+          <h3>Crisis Refuge</h3>
+          <p>Sudden overwhelm, urgent distress, and immediate safety support.</p>
+          <span class="city-action-btn">Listen to Story <span>→</span></span>
+        </article>
+
+        <article class="city-card glass-card city-trigger" data-city-title="Metropolis Plaza"
+          data-city-category="Campus Concerns"
+          data-city-story="Navigating social friction, peer pressure, and campus life conflicts can be confusing. Ash's Truth Echo uncovers clear, constructive solutions.">
+          <div class="city-icon-wrap">🏙️</div>
+          <div class="city-badge">SECTOR 04 — PUBLIC SPACES</div>
+          <h3>Metropolis Plaza</h3>
+          <p>Campus life issues, peer pressure, and social navigation.</p>
+          <span class="city-action-btn">Listen to Story <span>→</span></span>
+        </article>
+
+        <article class="city-card glass-card city-trigger" data-city-title="Digital Realm"
+          data-city-category="Cyber Harassment"
+          data-city-story="Online harassment and cyberbullying can feel relentless. Ash monitors the Digital Realm to shield young minds from online toxicity.">
+          <div class="city-icon-wrap">🌐</div>
+          <div class="city-badge">SECTOR 05 — ONLINE</div>
+          <h3>Digital Realm</h3>
+          <p>Cyberbullying, online harassment, and digital burnout.</p>
+          <span class="city-action-btn">Listen to Story <span>→</span></span>
+        </article>
+
+        <article class="city-card glass-card city-trigger" data-city-title="Workplace Corridor"
+          data-city-category="Internship Stress"
+          data-city-story="Early career friction and internship anxiety can feel overwhelming. Ash helps young workers navigate early career pressure.">
+          <div class="city-icon-wrap">💼</div>
+          <div class="city-badge">SECTOR 06 — WORKPLACE</div>
+          <h3>Workplace Corridor</h3>
+          <p>Internship anxiety, workplace pressure, and career burnout.</p>
+          <span class="city-action-btn">Listen to Story <span>→</span></span>
+        </article>
+      </div>
+    </section>
+
+    <!-- 5. Visual Archives Gallery Section -->
+    <section id="gallery" class="gallery-section section-pad">
+      <div class="section-head sketch-head reveal">
+        <span>05</span>
+        <h2>Visual Archives & Concept Media</h2>
+      </div>
+      <p class="gallery-subhead reveal">Explore character artwork, atmospheric cityscapes, concept blueprints, and
+        motion loops from Ash's universe.</p>
+
+      <div class="gallery-grid reveal">
+        <article class="gallery-card gallery-trigger"
+          data-media="{{ url_for('static', filename='images/background1.jpeg') }}" data-type="image"
+          data-title="The Haven at Twilight"
+          data-desc="Atmospheric twilight sanctuary where Ash monitors distress signals.">
+          <div class="gallery-media-wrapper">
+            <img src="{{ url_for('static', filename='images/background1.jpeg') }}" alt="The Haven at Twilight"
+              loading="lazy" />
+            <div class="gallery-overlay">
+              <span class="gallery-badge">CONCEPT ART</span>
+              <span class="gallery-expand-icon">⤢</span>
+            </div>
+          </div>
+          <div class="gallery-info">
+            <h4>The Haven at Twilight</h4>
+            <p>Ash's quiet sanctuary overlooking the city horizon.</p>
+          </div>
+        </article>
+
+        <article class="gallery-card gallery-trigger" data-media="{{ url_for('static', filename='images/city.mp4') }}"
+          data-type="video" data-title="Neon Metropolis"
+          data-desc="Dynamic nocturnal cityscape under Ash's protective watch.">
+          <div class="gallery-media-wrapper">
+            <video autoplay muted loop playsinline webkit-playsinline preload="auto">
+              <source src="{{ url_for('static', filename='images/city.mp4') }}" type="video/mp4" />
+            </video>
+            <div class="gallery-overlay">
+              <span class="gallery-badge">MOTION LOOP</span>
+              <span class="gallery-expand-icon">⤢</span>
+            </div>
+          </div>
+          <div class="gallery-info">
+            <h4>Neon Metropolis</h4>
+            <p>Living cityscape at night under Ash's watchful gaze.</p>
+          </div>
+        </article>
+
+        <article class="gallery-card gallery-trigger" data-media="{{ url_for('static', filename='images/logo.jpg') }}"
+          data-type="image" data-title="Ash Hero Portrait"
+          data-desc="Official key visual of Ash standing ready in her cosmic cloak.">
+          <div class="gallery-media-wrapper">
+            <img src="{{ url_for('static', filename='images/logo.jpg') }}" alt="Ash Hero Portrait" loading="lazy" />
+            <div class="gallery-overlay">
+              <span class="gallery-badge">KEY VISUAL</span>
+              <span class="gallery-expand-icon">⤢</span>
+            </div>
+          </div>
+          <div class="gallery-info">
+            <h4>Ash Hero Portrait</h4>
+            <p>High-resolution portrait of Ash in full superhero attire.</p>
+          </div>
+        </article>
+
+        <article class="gallery-card gallery-trigger"
+          data-media="{{ url_for('static', filename='images/background2.jpeg') }}" data-type="image"
+          data-title="Mystic Horizon" data-desc="Vibrant violet cosmic aurora representing empathy energy fields.">
+          <div class="gallery-media-wrapper">
+            <img src="{{ url_for('static', filename='images/background2.jpeg') }}" alt="Mystic Horizon"
+              loading="lazy" />
+            <div class="gallery-overlay">
+              <span class="gallery-badge">ATMOSPHERE</span>
+              <span class="gallery-expand-icon">⤢</span>
+            </div>
+          </div>
+          <div class="gallery-info">
+            <h4>Mystic Horizon</h4>
+            <p>Energy field visual representing emotional empathy radar.</p>
+          </div>
+        </article>
+
+        <article class="gallery-card gallery-trigger" data-media="{{ url_for('static', filename='images/1.jpeg') }}"
+          data-type="image" data-title="Heroic Stance" data-desc="Ash taking a moment to listen before responding.">
+          <div class="gallery-media-wrapper">
+            <img src="{{ url_for('static', filename='images/1.jpeg') }}" alt="Ash Heroic Stance" loading="lazy" />
+            <div class="gallery-overlay">
+              <span class="gallery-badge">CHARACTER STUDY</span>
+              <span class="gallery-expand-icon">⤢</span>
+            </div>
+          </div>
+          <div class="gallery-info">
+            <h4>Heroic Stance</h4>
+            <p>Close-up study focusing on composure and focus.</p>
+          </div>
+        </article>
+
+        <article class="gallery-card gallery-trigger" data-media="{{ url_for('static', filename='images/diff.png') }}"
+          data-type="image" data-title="Personality Blueprint"
+          data-desc="Detailed visual sheet mapping Ash's core personality traits.">
+          <div class="gallery-media-wrapper">
+            <img src="{{ url_for('static', filename='images/diff.png') }}" alt="Personality Blueprint" loading="lazy" />
+            <div class="gallery-overlay">
+              <span class="gallery-badge">BLUEPRINT</span>
+              <span class="gallery-expand-icon">⤢</span>
+            </div>
+          </div>
+          <div class="gallery-info">
+            <h4>Personality Blueprint</h4>
+            <p>Character specification and emotional power breakdown.</p>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <!-- 6. Mission Section: What Ash Stands For -->
+    <section class="mission-strip section-pad" id="mission">
+      <div class="section-label reveal">06 — WHAT ASH STANDS FOR</div>
+      <div class="mission-grid reveal">
+        <div>
+          <h2>Ash exists to help young people<br /><span>feel heard, supported, and less alone.</span></h2>
+          <p>Connection is the ultimate power. Ash helps visitors navigate stress, discover perspective, and identify
+            their next safe step.</p>
+        </div>
+        <ul class="mission-list">
+          <li><b>✦</b> Listen without judgment</li>
+          <li><b>✦</b> Encourage human connection</li>
+          <li><b>✦</b> Respect privacy</li>
+          <li><b>✦</b> Promote safe choices</li>
+          <li><b>✦</b> Support, not replace, real people</li>
+          <li><b>✦</b> Make asking for help feel easier</li>
+        </ul>
+      </div>
+
+      <!-- Responsible-AI Note -->
+      <div class="safety-note reveal">
+        <strong>Responsible-AI Note:</strong> Ash is an AI-powered support companion. She can listen, offer general
+        guidance, and help visitors identify their next step—but she is not a replacement for parents, trusted adults,
+        counselors, doctors, or emergency services. If you are in immediate danger or need urgent help, please contact
+        local emergency services or a trusted adult immediately.
+      </div>
+    </section>
+
+    <!-- 7. Personality Section: Know Your Hero -->
+    <section class="personality-strip section-pad" id="personality">
+      <div class="section-head sketch-head reveal">
+        <span>07 / CHARACTER TRAITS</span>
+        <h2>KNOW YOUR HERO // ASH</h2>
+      </div>
+
+      <div class="hero-character-header reveal">
+        <div class="character-title-wrap">
+          <span class="signal-tag">◉ HERO PROFILE DETECTED</span>
+          <h3 class="hero-motto-headline">Kind. Brave. Curious.</h3>
+          <p class="hero-motto-subhead">“She listens before she acts.”</p>
+        </div>
+      </div>
+
+      <!-- Interactive Trait Selector Tag Row -->
+      <div class="trait-tags-row reveal" id="traitTagsRow">
+        <button type="button" class="trait-tag-btn active" data-trait="KIND" data-icon="💜"
+          data-desc="Responds with warmth, respect, and deep empathy to every single signal received.">KIND</button>
+        <button type="button" class="trait-tag-btn" data-trait="BRAVE" data-icon="🛡️"
+          data-desc="Encourages citizens to face difficult moments with quiet courage and steady support.">BRAVE</button>
+        <button type="button" class="trait-tag-btn" data-trait="CURIOUS" data-icon="🎧"
+          data-desc="Asks thoughtful questions to truly understand what you carry before offering guidance.">CURIOUS</button>
+        <button type="button" class="trait-tag-btn" data-trait="INTELLIGENT" data-icon="🧠"
+          data-desc="Uses logic, calm reasoning, and structured insights to identify safe next steps.">INTELLIGENT</button>
+        <button type="button" class="trait-tag-btn" data-trait="HOPEFUL" data-icon="✨"
+          data-desc="Reminds citizens that even the heaviest situations can change for the better.">HOPEFUL</button>
+        <button type="button" class="trait-tag-btn" data-trait="RESPONSIBLE" data-icon="⚡"
+          data-desc="Knows boundaries and directly connects citizens with trusted human support when needed.">RESPONSIBLE</button>
+      </div>
+
+      <!-- Dynamic Trait Detail Display Card -->
+      <div class="trait-focus-card glass-card reveal" id="traitFocusCard">
+        <div class="trait-focus-icon" id="traitFocusIcon">💜</div>
+        <div class="trait-focus-content">
+          <span class="pillar-num">CHARACTER PRINCIPLE</span>
+          <h3 id="traitFocusTitle">KIND</h3>
+          <p id="traitFocusDesc">Responds with warmth, respect, and deep empathy to every single signal received.</p>
+        </div>
+      </div>
+
+      <!-- Character Quote Banner -->
+      <div class="hero-quote-box glass-card reveal">
+        <span class="quote-ornament">💜</span>
+        <blockquote>“You do not have to carry everything alone.”</blockquote>
+        <span class="quote-author">— Ash, Superhero Companion</span>
+      </div>
+    </section>
+
+    <!-- Spark of Hope Interactive Card -->
+    <section class="spark-section section-pad">
+      <div class="glass-card spark-card reveal">
+        <div class="spark-badge">
+          <span class="spark-icon">✨</span>
+          <span>A THOUGHT FROM ASH</span>
+        </div>
+        <blockquote class="spark-quote" id="sparkQuote">
+          “Exams measure memory, not your value as a person. Take a deep breath—you are doing better than you think.”
+        </blockquote>
+        <div class="spark-actions">
+          <button type="button" id="nextQuoteBtn" class="spark-btn">
+            <span>Get Another Thought</span>
+            <span class="spark-arrow">↻</span>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. Interactive Chatbot Section: Talk to Ash -->
+    <section id="chat" class="chat-section section-pad">
+      <div class="section-label reveal">08 — INTERACTIVE COMPANION</div>
+      <div class="chat-layout reveal">
+        <div class="chat-heading">
+          <h2>Talk to Ash</h2>
+          <p>A private, conversational intake. Take your time. Ash is right here to listen and help you find a safe next
+            step.</p>
+          <div class="channel-status"><span class="pulse-dot"></span> Channel encrypted · Ash online</div>
+        </div>
+
+        <div class="chat-window chat-popup" id="chatWindow">
+          <div class="chat-top">
+            <div class="chat-avatar">
+              <img src="{{ url_for('static', filename='images/help.png') }}" alt="Ash" />
+              <video autoplay muted loop playsinline webkit-playsinline preload="auto"
+                poster="{{ url_for('static', filename='images/help.png') }}" aria-label="Ash signal icon">
+                <source src="{{ url_for('static', filename='images/icon.mp4') }}" type="video/mp4" />
+              </video>
+            </div>
+            <div>
+              <strong>Ash</strong>
+              <small>small hero, on call</small>
+            </div>
+            <span class="chat-live">LIVE</span>
+            <button class="popup-close" id="closeChat" type="button" aria-label="Minimize Ash chat">−</button>
+          </div>
+
+          <div class="messages" id="messages" aria-live="polite"></div>
+          <div class="typing" id="typing"><span></span><span></span><span></span> Ash is typing...</div>
+
+          <div class="chat-input-row">
+            <input id="chatInput" type="text" autocomplete="off" placeholder="Type your reply..."
+              aria-label="Your reply" />
+            <button id="sendButton" aria-label="Send message">↗</button>
+          </div>
+          <p class="chat-foot">Your details help me respond. They are kept private & never shared publicly.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. Grievance Submission: Send Your Signal -->
+    <section id="signal" class="grievance-section section-pad">
+      <div class="section-head sketch-head reveal">
+        <span>09</span>
+        <h2>Send Your Signal</h2>
+      </div>
+      <p class="gallery-subhead reveal">Transmitting a signal allows Ash's team to record your concern securely and
+        respond.</p>
+
+      <div class="signal-page-container reveal">
+        <!-- Main Form Column (Floating Separate Sections) -->
+        <div class="signal-form-column">
+          <!-- Form Progress Bar floating glass panel -->
+          <div class="glass-panel form-progress-panel">
+            <div class="form-progress-bar">
+              <div class="progress-step active" id="progStep1"><span>01</span> Tell Us</div>
+              <div class="progress-step-line"></div>
+              <div class="progress-step" id="progStep2"><span>02</span> Your Concern</div>
+              <div class="progress-step-line"></div>
+              <div class="progress-step" id="progStep3"><span>03</span> Review</div>
+              <div class="progress-step-line"></div>
+              <div class="progress-step" id="progStep4"><span>04</span> Transmitted</div>
+            </div>
+          </div>
+
+          <form id="grievanceForm" class="grievance-form" autocomplete="off">
+            <!-- SECTION 1: TRANSMISSION CHANNEL & SELECTABLE CARDS -->
+            <div class="glass-panel form-section-panel sharing-mode-panel">
+              <div class="hud-section-header">
+                <span class="hud-num">01 //</span>
+                <span class="hud-title">TRANSMISSION CHANNEL</span>
+              </div>
+              <p class="section-subtitle">How would you like to share this signal?</p>
+
+              <div class="radio-card-group">
+                <label class="radio-card active" id="cardModeIdentified">
+                  <input type="radio" name="anonymousMode" value="false" checked id="modeIdentified" class="sr-only-radio" />
+                  <div class="radio-card-top">
+                    <span class="radio-indicator">◉</span>
+                    <strong class="radio-card-title">WITH MY DETAILS</strong>
+                  </div>
+                  <span class="radio-card-desc">Receive email updates back from Ash's team</span>
+                </label>
+                <label class="radio-card" id="cardModeAnonymous">
+                  <input type="radio" name="anonymousMode" value="true" id="modeAnonymous" class="sr-only-radio" />
+                  <div class="radio-card-top">
+                    <span class="radio-indicator">○</span>
+                    <strong class="radio-card-title">ANONYMOUS</strong>
+                  </div>
+                  <span class="radio-card-desc">Identity protected & encrypted signal</span>
+                </label>
+              </div>
+              <p class="privacy-hint" id="privacyHint">Your contact details allow Ash's team to send email updates back to
+                you.</p>
+            </div>
+
+            <!-- SECTION 2: YOUR SIGNAL IDENTITY (FLOATING SEPARATE FIELDS) -->
+            <div class="form-identity-section">
+              <div class="hud-section-header">
+                <span class="hud-num">01 //</span>
+                <span class="hud-title">YOUR SIGNAL IDENTITY</span>
+              </div>
+
+              <div class="floating-fields-grid">
+                <div class="glass-panel form-field-panel" id="nameGroup">
+                  <label for="formName">Name or Nickname *</label>
+                  <input type="text" id="formName" autocomplete="off" required placeholder="How should Ash address you?" />
+                </div>
+
+                <div class="glass-panel form-field-panel">
+                  <label for="formAge">Age Group *</label>
+                  <select id="formAge" required>
+                    <option value="" disabled selected>Select your age group</option>
+                    <option value="Under 13">Under 13</option>
+                    <option value="13–17">13–17</option>
+                    <option value="18–24">18–24</option>
+                    <option value="25+">25+</option>
+                  </select>
+                </div>
+
+                <div class="glass-panel form-field-panel" id="emailGroup">
+                  <label for="formEmail">Email Address *</label>
+                  <input type="email" id="formEmail" autocomplete="off" required placeholder="you@example.com" />
+                </div>
+
+                <div class="glass-panel form-field-panel">
+                  <label for="formLocation">General Location *</label>
+                  <input type="text" id="formLocation" autocomplete="off" required
+                    placeholder="City or region (no exact address)" />
+                </div>
+              </div>
+            </div>
+
+            <!-- SECTION 3: SIGNAL TYPE -->
+            <div class="glass-panel form-section-panel">
+              <div class="hud-section-header">
+                <span class="hud-num">02 //</span>
+                <span class="hud-title">SIGNAL TYPE</span>
+              </div>
+              <div class="form-group form-full">
+                <label for="formCategory">What kind of signal are you transmitting? *</label>
+                <select id="formCategory" required>
+                  <option value="" disabled selected>Select signal category</option>
+                  <option value="Need to be heard">🟣 Need to be heard (Unspoken stress, feelings & thoughts)</option>
+                  <option value="Need guidance">🔵 Need guidance (Academic, decision making, career)</option>
+                  <option value="Need connection">🟡 Need connection (Loneliness & feeling isolated)</option>
+                  <option value="Immediate danger">🔴 Immediate danger (Urgent safety crisis & immediate distress)
+                  </option>
+                </select>
+              </div>
+
+              <!-- Emergency Safety Directive Banner -->
+              <div id="emergencyDirective" class="emergency-directive-box" style="display: none;">
+                <div class="emergency-header">
+                  <span class="emergency-pulse">🔴</span>
+                  <div>
+                    <h4>Emergency Safety Directives</h4>
+                    <p>Ash is an AI companion for general guidance. If you or someone you know is in immediate physical
+                      danger, distress, or harm, please reach out directly to real-world emergency services right away:
+                    </p>
+                  </div>
+                </div>
+                <div class="emergency-helplines">
+                  <a href="tel:112" class="helpline-pill">🚨 Emergency (India): <strong>112</strong></a>
+                  <a href="tel:14416" class="helpline-pill">🧠 Tele-MANAS Hotline: <strong>14416 /
+                      1800-891-4416</strong></a>
+                  <a href="tel:988" class="helpline-pill">🌐 Global Lifeline: <strong>988</strong></a>
+                </div>
+              </div>
+            </div>
+
+            <!-- SECTION 4: YOUR MESSAGE -->
+            <div class="glass-panel form-section-panel form-message-panel">
+              <div class="hud-section-header">
+                <span class="hud-num">03 //</span>
+                <span class="hud-title">YOUR MESSAGE</span>
+              </div>
+
+              <div class="form-group form-full">
+                <!-- Pre-fill Starter Chips for Quick Intake -->
+                <div class="form-starter-chips" id="formStarterChips">
+                  <span class="starter-label">Quick Starters:</span>
+                  <button type="button" class="starter-chip"
+                    data-text="I feel overwhelmed by upcoming study & exam pressures and need guidance.">📚 Exam
+                    Pressure</button>
+                  <button type="button" class="starter-chip"
+                    data-text="I feel isolated and invisible in my daily environment and just want to be heard.">🌙
+                    Feeling Isolated</button>
+                  <button type="button" class="starter-chip"
+                    data-text="I'm facing stress at work/internship and struggling to balance my workload.">💼 Work
+                    Stress</button>
+                </div>
+                <textarea id="formRequest" rows="5" required placeholder="Share what's on your mind..."></textarea>
+              </div>
+
+              <div class="form-group form-full checkbox-group">
+                <label class="checkbox-label">
+                  <input type="checkbox" id="formConsent" required />
+                  <span>I consent to Ash’s team receiving my signal to provide guidance.</span>
+                </label>
+              </div>
+            </div>
+
+            <!-- TRANSMIT BUTTON -->
+            <div class="form-submit-row">
+              <button type="submit" id="formSubmitBtn" class="transmit-button">
+                <span class="btn-text">TRANSMIT SIGNAL</span>
+                <span class="btn-icon">⚡</span>
+              </button>
+            </div>
+          </form>
+
+          <!-- Multi-Step Transmission Sequence Animation -->
+          <div id="transmissionSequence" class="transmission-seq-box" style="display: none;">
+            <div class="seq-step" id="seqStep1">
+              <span class="seq-spinner">⚡</span>
+              <span class="seq-label">TRANSMITTING...</span>
+            </div>
+            <div class="seq-step" id="seqStep2">
+              <span class="seq-icon">🛡️</span>
+              <span class="seq-label">SIGNAL ENCRYPTED ✓</span>
+            </div>
+            <div class="seq-step" id="seqStep3">
+              <span class="seq-icon">🎧</span>
+              <span class="seq-label">ASH IS LISTENING...</span>
+            </div>
+            <div class="seq-step" id="seqStep4">
+              <span class="seq-icon">✦</span>
+              <span class="seq-label">SIGNAL RECEIVED ✓</span>
+            </div>
+            <div class="seq-final" id="seqFinal" style="display: none;">
+              <h2>You were heard.</h2>
+              <p>Your signal has been registered into Ash's protective companion system.</p>
+            </div>
+          </div>
+
+          <!-- Informative Tracked Signal Success Box -->
+          <div id="formSuccessMessage" class="form-success-box" style="display: none">
+            <div class="success-header">
+              <div class="success-icon">✦</div>
+              <div>
+                <h3>Signal Transmitted ✓</h3>
+                <p>Your concern has been securely recorded by Ash's guardian network.</p>
+              </div>
+            </div>
+
+            <div class="signal-tracker-card">
+              <div class="tracker-row">
+                <span>Signal ID:</span>
+                <strong id="trackSignalId">ASH-2026-00421</strong>
+              </div>
+              <div class="tracker-row">
+                <span>Status:</span>
+                <strong class="status-badge">Received & Logged</strong>
+              </div>
+              <div class="tracker-row">
+                <span>Category:</span>
+                <strong id="trackCategory">Academic stress</strong>
+              </div>
+              <div class="tracker-row">
+                <span>Submitted:</span>
+                <strong id="trackTime">Just now</strong>
+              </div>
+            </div>
+
+            <div class="success-actions">
+              <button type="button" class="ash-action ash-action-primary" id="trackSignalBtn">Track Signal <span>→</span></button>
+              <button type="button" class="ash-action" id="resetFormBtn">Send Another Signal</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Right Column: Ash Silhouette Watching Over the Form Page -->
+        <aside class="ash-form-silhouette-panel" aria-label="Ash guardian overview">
+          <div class="ash-silhouette-card">
+            <div class="ash-silhouette-media">
+              <img src="{{ url_for('static', filename='images/help.png') }}" class="ash-silhouette-img" alt="Ash Silhouette" />
+              <video class="ash-silhouette-video" autoplay muted loop playsinline webkit-playsinline preload="auto" aria-hidden="true">
+                <source src="{{ url_for('static', filename='images/ash-hero-transparent.webm') }}" type="video/webm" />
+                <source src="{{ url_for('static', filename='images/hero.mp4') }}" type="video/mp4" />
+              </video>
+              <div class="ash-silhouette-overlay"></div>
+            </div>
+            <div class="ash-silhouette-hud">
+              <span class="hud-dot-pulse"></span>
+              <span class="hud-status-text">ASH // WATCHING OVER SIGNAL</span>
+            </div>
+            <p class="ash-silhouette-quote">“Every signal transmitted is received with care. Speak freely.”</p>
+          </div>
+        </aside>
+      </div>
+    </section>
+
+    <!-- 10. Interactive FAQ Accordion Section -->
+    <section id="faq" class="faq-section section-pad">
+      <div class="section-head sketch-head reveal">
+        <span>10 / SYSTEM HELP</span>
+        <h2>FREQUENTLY ASKED QUESTIONS</h2>
+      </div>
+      <p class="gallery-subhead reveal">Everything you need to know about transmitting signals and talking to Ash.</p>
+
+      <div class="faq-accordion reveal">
+        <details class="faq-item glass-card" open>
+          <summary class="faq-question">
+            <strong>How does Ash protect my privacy?</strong>
+            <span class="faq-icon">+</span>
+          </summary>
+          <div class="faq-answer">
+            <p>Ash Link and signal transmissions use encrypted communication protocols. You have full control: you can
+              share your details for follow-up responses, or toggle <strong>Anonymously (Identity Protected)</strong> so
+              no names or contact details are recorded.</p>
+          </div>
+        </details>
+
+        <details class="faq-item glass-card">
+          <summary class="faq-question">
+            <strong>What happens after I transmit a signal?</strong>
+            <span class="faq-icon">+</span>
+          </summary>
+          <div class="faq-answer">
+            <p>Your transmission undergoes immediate encryption and intake. You receive a unique <strong>Signal
+                ID</strong> (e.g. <code>ASH-2026-48912</code>) to track your intake status. If contact details were
+              provided, updates are delivered securely.</p>
+          </div>
+        </details>
+
+        <details class="faq-item glass-card">
+          <summary class="faq-question">
+            <strong>Can I talk to Ash anytime?</strong>
+            <span class="faq-icon">+</span>
+          </summary>
+          <div class="faq-answer">
+            <p>Yes! Ash Link companion is active 24/7. Simply click any <strong>Talk to Ash ✦</strong> button or
+              launcher icon on the bottom right to initiate a private intake conversation whenever you need someone to
+              listen.</p>
+          </div>
+        </details>
+
+        <details class="faq-item glass-card">
+          <summary class="faq-question">
+            <strong>What if I am in immediate danger or physical crisis?</strong>
+            <span class="faq-icon">+</span>
+          </summary>
+          <div class="faq-answer">
+            <p>Ash is an AI support companion designed for guidance and non-emergency support. If you or someone you
+              know is in immediate physical danger, select 🔴 <strong>Immediate danger</strong> in the category menu to
+              instantly display direct call buttons for emergency lifelines (<strong>112</strong>, <strong>14416
+                Tele-MANAS</strong>, <strong>988</strong>).</p>
+          </div>
+        </details>
+      </div>
+    </section>
+
+    <!-- 8. Strong Call-to-Action -->
+    <section class="footer-cta section-pad">
+      <div class="footer-ornament">💜</div>
+      <p class="eyebrow">Your voice matters. Your feelings matter. Your next step matters.</p>
+      <h2>You don’t have to be loud<br /><em>to be heard.</em></h2>
+      <a class="button button-light" href="#chat">Talk to Ash <span>✦</span></a>
+
+      <div class="final-hero-quote">
+        “Even the smallest signal can lead to a brighter path.”
+      </div>
+
+      <div class="footer-meta">
+        <span>ASH // SUPERHERO COMPANION</span>
+        <span>FOR TEENAGERS & YOUNG PEOPLE</span>
+        <span>© 2026 ASH PORTAL</span>
+      </div>
+    </section>
+  </main>
+
+  <!-- Global Lightbox Modal -->
+  <div class="lightbox-modal" id="lightboxModal" role="dialog" aria-modal="true" aria-hidden="true">
+    <button class="lightbox-close" id="lightboxClose" aria-label="Close Lightbox">✕</button>
+    <div class="lightbox-content">
+      <div class="lightbox-media-container" id="lightboxMediaContainer"></div>
+      <div class="lightbox-caption">
+        <h3 id="lightboxTitle"></h3>
+        <p id="lightboxDesc"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification & Floating Controls -->
+  <div class="toast" id="toast" role="status"></div>
+  <button class="scroll-top-btn" id="scrollTopBtn" type="button" aria-label="Back to top" title="Back to top">↑</button>
+  <button class="chat-launcher" id="chatLauncher" type="button" aria-label="Talk to Ash">
+    <span class="launcher-pulse"></span>
+    <span class="launcher-text">Talk to Ash</span>
+    <span class="launcher-icon">✦</span>
+  </button>
+  <iframe name="email-submit-frame" title="Email submission" class="email-frame"></iframe>
+
+  <script src="{{ url_for('static', filename='js/chatbot.js') }}"></script>
+</body>
+
+</html>
