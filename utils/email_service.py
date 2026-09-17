@@ -77,7 +77,7 @@ def _message(record: dict, recipient: str) -> EmailMessage:
 
 def _send_smtp(record: dict, recipient: str, host: str, user: str, password: str) -> None:
     message = _message(record, recipient)
-    port = int(os.getenv('SMTP_PORT', '587'))
+    port = int(os.getenv('SMTP_PORT', '465'))
 
     import socket
     original_getaddrinfo = socket.getaddrinfo
@@ -90,18 +90,25 @@ def _send_smtp(record: dict, recipient: str, host: str, user: str, password: str
     socket.getaddrinfo = ipv4_getaddrinfo
     try:
         if port == 465:
-            with smtplib.SMTP_SSL(host, port, timeout=15) as server:
+            with smtplib.SMTP_SSL(host, 465, timeout=15) as server:
                 server.login(user, password)
                 server.send_message(message)
         else:
-            with smtplib.SMTP(host, port, timeout=15) as server:
-                server.ehlo()
-                server.starttls()
-                server.ehlo()
-                server.login(user, password)
-                server.send_message(message)
+            try:
+                with smtplib.SMTP(host, port, timeout=15) as server:
+                    server.ehlo()
+                    server.starttls()
+                    server.ehlo()
+                    server.login(user, password)
+                    server.send_message(message)
+            except Exception as e:
+                print(f"[Email Service] Port {port} failed/timed out ({e}). Retrying via SSL on Port 465...")
+                with smtplib.SMTP_SSL(host, 465, timeout=15) as server:
+                    server.login(user, password)
+                    server.send_message(message)
     finally:
         socket.getaddrinfo = original_getaddrinfo
+
 
 
 
