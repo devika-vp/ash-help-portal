@@ -47,12 +47,18 @@ def submit_help():
     record = {field: str(payload[field]).strip() for field in required}
     record['submitted_at'] = datetime.now(timezone.utc).strftime('%d %B %Y, %I:%M %p UTC')
     record['id'] = save_help_request(BASE_DIR / 'database' / 'ash.db', record)
-    try:
-        send_help_notification(record)
-    except Exception as error:
-        app.logger.exception('Help request saved but notification failed: %s', error)
-        return jsonify({'error': 'Your request was saved, but the notification channel is unavailable.'}), 502
+    
+    # Asynchronous background notification to prevent UI lag
+    import threading
+    def _async_notify(rec):
+        try:
+            send_help_notification(rec)
+        except Exception as error:
+            app.logger.exception('Help request saved but notification failed: %s', error)
+
+    threading.Thread(target=_async_notify, args=(record,), daemon=True).start()
     return jsonify({'ok': True, 'request_id': record['id']})
+
 
 
 @app.get('/success')

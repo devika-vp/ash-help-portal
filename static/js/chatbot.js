@@ -841,6 +841,8 @@ askCurrent();
   // Form Submission
   form.addEventListener('submit', (e) => {
     e.preventDefault();
+    if (submitBtn && submitBtn.disabled) return;
+
     const isAnon = modeAnonymous?.checked;
     const category = document.getElementById('formCategory').value;
     const rawName = document.getElementById('formName').value.trim();
@@ -855,7 +857,11 @@ askCurrent();
       request: `[${category}] ${document.getElementById('formRequest').value.trim()}`
     };
 
-    if (submitBtn) submitBtn.disabled = true;
+    if (submitBtn) {
+      submitBtn.disabled = true;
+      const btnText = submitBtn.querySelector('.btn-text');
+      if (btnText) btnText.textContent = 'TRANSMITTING...';
+    }
 
     // Generate Signal ID
     const randomNum = Math.floor(10000 + Math.random() * 90000);
@@ -874,9 +880,14 @@ askCurrent();
       runTransmissionSequence(signalId, category);
     })
     .finally(() => {
-      if (submitBtn) submitBtn.disabled = false;
+      if (submitBtn) {
+        submitBtn.disabled = false;
+        const btnText = submitBtn.querySelector('.btn-text');
+        if (btnText) btnText.textContent = 'TRANSMIT SIGNAL';
+      }
     });
   });
+
 
   function displaySuccess(signalId, category) {
     form.style.display = 'none';
