@@ -78,10 +78,33 @@ def _message(record: dict, recipient: str) -> EmailMessage:
 def _send_smtp(record: dict, recipient: str, host: str, user: str, password: str) -> None:
     message = _message(record, recipient)
     port = int(os.getenv('SMTP_PORT', '587'))
-    with smtplib.SMTP(host, port, timeout=15) as server:
-        server.starttls()
-        server.login(user, password)
-        server.send_message(message)
+
+    import socket
+    original_getaddrinfo = socket.getaddrinfo
+
+    def ipv4_getaddrinfo(*args, **kwargs):
+        if args and args[0] == host:
+            return original_getaddrinfo(host, args[1] if len(args) > 1 else port, socket.AF_INET, socket.SOCK_STREAM)
+        return original_getaddrinfo(*args, **kwargs)
+
+    socket.getaddrinfo = ipv4_getaddrinfo
+    try:
+        if port == 465:
+            with smtplib.SMTP_SSL(host, port, timeout=15) as server:
+                server.login(user, password)
+                server.send_message(message)
+        else:
+            with smtplib.SMTP(host, port, timeout=15) as server:
+                server.ehlo()
+                server.starttls()
+                server.ehlo()
+                server.login(user, password)
+                server.send_message(message)
+    finally:
+        socket.getaddrinfo = original_getaddrinfo
+
+
+
 
 
 def _send_formsubmit(record: dict, recipient: str) -> None:
