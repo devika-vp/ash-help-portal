@@ -115,11 +115,11 @@ def _send_smtp(record: dict, recipient: str, host: str, user: str, password: str
 
 
 def _send_formsubmit(record: dict, recipient: str) -> None:
+    import json
     payload = {
         '_subject': f"🦸 Someone Needs Your Help! — {record['name']}",
         '_replyto': record['email'],
         '_captcha': 'false',
-        '_template': 'table',
         'Visitor Name': record['name'],
         'Age Group': record['age'],
         'Location': record['location'],
@@ -127,18 +127,21 @@ def _send_formsubmit(record: dict, recipient: str) -> None:
         'Submission Time': record['submitted_at'],
         'Grievance Request': record['request'],
     }
-    data = urllib.parse.urlencode(payload).encode()
-    request = urllib.request.Request(f'https://formsubmit.co/{recipient}', data=data, method='POST')
-    request.add_header('Content-Type', 'application/x-www-form-urlencoded')
-    request.add_header('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36')
+    data = json.dumps(payload).encode('utf-8')
+    req = urllib.request.Request(f'https://formsubmit.co/ajax/{recipient}', data=data, method='POST')
+    req.add_header('Content-Type', 'application/json')
+    req.add_header('Accept', 'application/json')
+    req.add_header('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36')
+    req.add_header('Referer', 'https://ash-help-portal.onrender.com/')
     try:
-        with urllib.request.urlopen(request, timeout=15):
+        with urllib.request.urlopen(req, timeout=15):
             pass
     except Exception as e:
-        # Fallback to secondary gateway if primary fails
-        fallback_req = urllib.request.Request(f'https://formsubmit.co/ajax/{recipient}', data=data, method='POST')
+        form_data = urllib.parse.urlencode(payload).encode('utf-8')
+        fallback_req = urllib.request.Request(f'https://formsubmit.co/{recipient}', data=form_data, method='POST')
         fallback_req.add_header('Content-Type', 'application/x-www-form-urlencoded')
-        fallback_req.add_header('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36')
+        fallback_req.add_header('User-Agent', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36')
         with urllib.request.urlopen(fallback_req, timeout=15):
             pass
+
 
